@@ -30,9 +30,10 @@ class JwtManager:
         }
 
     def encode(self, payload, expire=43200):
-        payload.update({
-            'exp': int(time.time() + expire)
-        })
+        if not expire:
+            payload.update({
+                'exp': int(time.time() + expire)
+            })
         return jwt.encode(
             payload=payload,
             key=self.keyword,
