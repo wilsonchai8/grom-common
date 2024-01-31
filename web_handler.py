@@ -17,7 +17,7 @@ class WebHandler(RequestHandler):
 
     def prepare(self):
         try:
-            if self.cookies['token'].value:
+            if self.cookies.get('token'):
                 self.token = self.cookies['token'].value
                 payload = self.token
             else:
