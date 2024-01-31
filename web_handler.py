@@ -17,14 +17,19 @@ class WebHandler(RequestHandler):
 
     def prepare(self):
         try:
-            self.auth = self.cookies['auth'].value
-            self.current_user = self.cookies['username'].value
-            self.nickname = self.cookies['nickname'].value
-            self.email = self.cookies['email'].value
-            self.contact = self.cookies['contact'].value
-            self.routes = self.cookies['routes'].value
-            self.components = self.cookies['components'].value
-            self.requests = self.cookies['requests'].value
+            if self.cookies['token'].value:
+                self.token = self.cookies['token'].value
+                payload = self.token
+            else:
+                self.auth = self.cookies['auth'].value
+                self.current_user = self.cookies['username'].value
+                self.nickname = self.cookies['nickname'].value
+                self.email = self.cookies['email'].value
+                self.contact = self.cookies['contact'].value
+                self.routes = self.cookies['routes'].value
+                self.components = self.cookies['components'].value
+                self.requests = self.cookies['requests'].value
+                payload = self.auth
         except KeyError:
             raise AuthError('authentication failed')
         except Exception as e:
@@ -32,9 +37,9 @@ class WebHandler(RequestHandler):
 
         try:
             jm = JwtManager()
-            payload = jm.decode(self.auth)
+            jm.decode(payload)
         except Exception as e:
-            raise AuthError(e)
+            raise AuthError(msg=str(e))
 
     def on_finish(self):
         access_logger.info('{} {} {} {} {} {}ms'.format(

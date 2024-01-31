@@ -39,8 +39,8 @@ class JwtManager:
             algorithm='HS256',
             headers=self.headers).decode('utf-8')
 
-    def decode(self, token):
-        payload = jwt.decode(token, self.keyword, True, algorithm='HS256')
+    def decode(self, payload):
+        payload = jwt.decode(payload, self.keyword, True, algorithm='HS256')
         return payload
 
 
