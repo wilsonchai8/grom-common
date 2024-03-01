@@ -54,24 +54,14 @@ class WebHandler(RequestHandler):
     def write_error(self, status_code, **kwargs):
         msg = None
         if 'exc_info' in kwargs:
-            if ParamError in kwargs.get('exc_info'):
-                code = 2
-            elif MysqlError in kwargs.get('exc_info'):
-                code = 3
+            if LoginError in kwargs.get('exc_info'):
+                status_code = 401
             elif AuthError in kwargs.get('exc_info'):
-                code = 4
                 status_code = 401
             elif ForbiddenError in kwargs.get('exc_info'):
-                code = 5
                 status_code = 403
-            elif StateError in kwargs.get('exc_info'):
-                code = 6
-                msg = kwargs.get('exc_info')[1].args[0]
-            elif RunError in kwargs.get('exc_info'):
-                code = 7
-                msg = kwargs.get('exc_info')[1].args[0]
-            else:
-                code = 1
+            msg = kwargs.get('exc_info')[1].args[0]
+            code = kwargs.get('exc_info')[1].args[1]
             self.reply(msg, code, status_code)
         else:
             self.reply(self.reason, 1, status_code)
