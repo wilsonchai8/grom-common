@@ -6,9 +6,9 @@ class ParamError(Exception):
         msg = '{}： {}'.format(MSGS[PARAM_ERROR], msg)
         super().__init__(msg, code)
 
-class MysqlError(Exception):
-    def __init__(self, msg="", code=MYSQL_ERROR):
-        msg = '{}： {}'.format(MSGS[MYSQL_ERROR], msg)
+class LoginError(Exception):
+    def __init__(self, msg="", code=LOGIN_ERROR):
+        msg = '{}： {}'.format(MSGS[LOGIN_ERROR], msg)
         super().__init__(msg, code)
 
 class AuthError(Exception):
@@ -29,4 +29,9 @@ class StateError(Exception):
 class RunError(Exception):
     def __init__(self, msg="", code=RUN_ERROR):
         msg = '{}： {}'.format(MSGS[RUN_ERROR], msg)
+        super().__init__(msg, code)
+
+class MysqlError(Exception):
+    def __init__(self, msg="", code=MYSQL_ERROR):
+        msg = '{}： {}'.format(MSGS[MYSQL_ERROR], msg)
         super().__init__(msg, code)
