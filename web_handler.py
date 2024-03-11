@@ -5,6 +5,7 @@ from tornado.escape import url_unescape
 from .log_handler import logger, access_logger
 import traceback
 import json
+import re
 from .exception_handler import *
 from datetime import date, datetime
 from .utils import JwtManager
@@ -18,7 +19,8 @@ class WebHandler(RequestHandler):
     def prepare(self):
         try:
             if self.request.headers.get('Authorization'):
-                auth_type, payload = self.request.headers.get('Authorization').split('')
+                authorization = self.request.headers.get('Authorization')
+                auth_type, payload = re.split(r'\s+', authorization)
             else:
                 self.auth = self.cookies['auth'].value
                 self.current_user = self.cookies['username'].value
