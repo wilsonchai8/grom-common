@@ -17,9 +17,8 @@ class WebHandler(RequestHandler):
 
     def prepare(self):
         try:
-            if self.cookies.get('token'):
-                self.token = self.cookies['token'].value
-                payload = self.token
+            if self.request.headers.get('Authorization'):
+                auth_type, payload = self.request.headers.get('Authorization').split('')
             else:
                 self.auth = self.cookies['auth'].value
                 self.current_user = self.cookies['username'].value
